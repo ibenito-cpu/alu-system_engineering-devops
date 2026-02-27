@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-ssh -i ~/.ssh/school ubuntu@$1 #use for public key authentication
+# Connects to a server using the ubuntu user and the ~/.ssh/school private key
+ssh -i ~/.ssh/school ubuntu@$1
