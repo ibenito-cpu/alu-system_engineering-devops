@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-ssh -i ~/.ssh/school ubuntu@$1
+ssh -i ~/.ssh/school ubuntu@$1 #use for public key authentication
