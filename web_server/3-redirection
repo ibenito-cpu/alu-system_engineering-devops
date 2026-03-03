@@ -1,20 +1,20 @@
 #!/usr/bin/env bash
-# Configures Nginx with a 301 redirect from /redirect_me
+# Configures Nginx with a 301 redirect for /redirect_me
 
-# Update and install Nginx
+# 1. Update and Install Nginx
 apt-get update -y
 apt-get install -y nginx
 
-# Create the standard index page from the previous task
-echo "Holberton School for the win!" > /var/www/html/index.html
+# 2. Create the default index page
+echo "Holberton School" > /var/www/html/index.html
 
-# Configure the 301 redirection
-# We use 'sed' to insert the redirection line into the default config
-# It looks for 'server_name _;' and adds the return 301 line right after it
-REDI_URL="https://www.youtube.com/watch?v=QH2-TGUlwu4"
-CONF_FILE="/etc/nginx/sites-available/default"
+# 3. Configure the 301 redirection
+# We use sed to search for 'server_name _;' and append the redirection after it.
+# This ensures the rule is inside the server { ... } block.
+target_line="server_name _;"
+redirect_rule="\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}"
 
-sed -i "/server_name _;/a \\\n\trewrite ^/redirect_me/?$ $REDI_URL permanent;" "$CONF_FILE"
+sed -i "s|$target_line|$target_line$redirect_rule|" /etc/nginx/sites-available/default
 
-# Start or restart Nginx to apply changes
+# 4. Restart Nginx to apply changes (without systemctl)
 service nginx restart
