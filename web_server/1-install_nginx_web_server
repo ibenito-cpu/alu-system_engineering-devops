@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# Configures a new Ubuntu machine with Nginx serving specific content
+
+# Update package lists to ensure we get the latest version of Nginx
+apt-get update -y
+
+# Install Nginx
+apt-get install -y nginx
+
+# Create a basic HTML file with the required string
+echo "Holberton School for the win!" > /var/www/html/index.html
+
+# Ensure Nginx is running and pick up changes
+# Using 'service' as 'systemctl' is restricted
+service nginx start
