@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+# Configures a brand new Ubuntu machine with Nginx and a custom HTTP response header
+# shellcheck disable=SC2154
+
+apt-get update -y
+apt-get install -y nginx
+
+# Overwrite the default Nginx configuration with our custom header setup
+cat << EOF > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+    
+    # Injects the custom HTTP response header with the server's hostname
+    add_header X-Served-By $HOSTNAME;
+
+    location / {
+        try_files \$uri \$uri/ =404;
+    }
+}
+EOF
+
+# Restart Nginx so the new configuration takes effect
+service nginx restart
